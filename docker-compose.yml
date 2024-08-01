@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+
+    #Serviço para rodar a aplicação NEXTJS (frontend)
+    frontend:
+      build: ./frontend #Diretório onde está o Dockerfile
+      ports:
+        - "3000:3000"
+      networks:
+        - default
+
+    #Serviço para rodar a aplicação NESTJS (backend)
+    backend:
+      build: ./backend #Diretório onde está o Dockerfile
+      ports:
+        - "5000:3000"
+      networks:
+        - default
+      depends_on:
+        - db
+
+    #Serviço para rodar o banco de dados (SQLSERVER)
+    db:
+      image: mcr.microsoft.com/mssql/server:2019-latest
+      environment: 
+         SA_PASSWORD: "Coti2024!"
+         ACCEPT_EULA: "Y"
+      ports:
+        - "1433:1433"
+      networks:
+        - default
+
+networks:
+    default:
+        driver: bridge
